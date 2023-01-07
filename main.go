@@ -1,7 +1,7 @@
 package main
 
 import (
-	"net/http"
+	"pustaka-api/handler"
 
 	"github.com/gin-gonic/gin"
 )
@@ -9,31 +9,13 @@ import (
 func main() {
 	router := gin.Default()
 
-	router.GET("/", rootHandler)
-	router.GET("/hello", helloHandler)
-	router.GET("/books/:id", booksHandler)
+	v1 := router.Group("/v1")
+
+	v1.GET("/", handler.RootHandler)
+	v1.GET("/hello", handler.HelloHandler)
+	v1.GET("/books/:id/:title", handler.BooksHandler)
+	v1.GET("/query", handler.QueryHandler)
+	v1.POST("/books", handler.PostBookHandler)
 
 	router.Run()
-}
-
-func rootHandler(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"name": "Juang Salaz Prabowo",
-		"Bio":  "A Software Engineer",
-	})
-}
-
-func helloHandler(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"title":    "Hello Golang",
-		"subtitle": "Belajar Golang bareng juang",
-	})
-}
-
-func booksHandler(c *gin.Context) {
-	id := c.Param("id")
-
-	c.JSON(http.StatusOK, gin.H{
-		"id": id,
-	})
 }
